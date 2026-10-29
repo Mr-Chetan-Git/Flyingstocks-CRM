@@ -1,0 +1,33 @@
+# Git & Environment
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+venv/
+.venv/
+env/
+
+# Node & Build Outputs
+node_modules/
+dist/
+build/
+.oxlintrc.json
+
+# Development Scratch & Logs
+*.log
+scratch/
+docs/
+tests/
+
+# EXPLICIT INCLUSIONS FOR AI MODEL ARTIFACTS
+!transformer/checkpoints/
+!transformer/checkpoints/*.pt
+!transformer/checkpoints/*.pkl

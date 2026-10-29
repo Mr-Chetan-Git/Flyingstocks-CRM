@@ -1,0 +1,136 @@
+﻿# ==============================================================================
+# Git Ignore Rules for CRM-2 (Frontend, Backend, AI & Email Modules)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Environment Variables & Sensitive Credentials
+# ------------------------------------------------------------------------------
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+*.pem
+*.key
+*.lic
+
+# ------------------------------------------------------------------------------
+# Node.js & Frontend (React / Vite)
+# ------------------------------------------------------------------------------
+node_modules/
+frontend/node_modules/
+dist/
+dist-ssr/
+frontend/dist/
+frontend/dist-ssr/
+.vite/
+frontend/.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+.oxlint-cache
+
+# ------------------------------------------------------------------------------
+# Python & Backend (Flask / SQLAlchemy / PyTorch)
+# ------------------------------------------------------------------------------
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+*/*/*/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+Email/env/
+backend/env/
+backend/venv/
+
+# PyInstaller / Build Artifacts
+build/
+Email/build/
+Email/dist/
+*.spec
+*.exe
+*.pkg
+
+# Python testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Database files & SQLite instances
+*.db
+*.sqlite
+*.sqlite3
+instance/
+backend/instance/
+
+# ------------------------------------------------------------------------------
+# Large Zip Archives & Temporary Files
+# ------------------------------------------------------------------------------
+*.zip
+*.tar.gz
+*.rar
+*.7z
+Email.zip
+Email (2).zip
+
+# ------------------------------------------------------------------------------
+# Logs & Scratch Directories
+# ------------------------------------------------------------------------------
+*.log
+logs/
+backend/logs/
+scratch/
+tmp/
+temp/
+
+# ------------------------------------------------------------------------------
+# OS & Editor Specific Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+Email/env
+Email/config_email.yaml
+
+# Python environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# AI model checkpoints
+transformer/checkpoints/
