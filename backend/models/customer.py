@@ -1,12 +1,17 @@
 from database.connection import db
+from datetime import datetime
 
 
 class Customer(db.Model):
     __tablename__ = "crm_customer_info"
 
     id = db.Column(db.Integer, primary_key=True)
-
-    date = db.Column(db.DateTime)
+    
+    date = db.Column(
+        db.DateTime,
+        nullable=True,
+        default=datetime.now
+    )
 
     name = db.Column(db.String(255))
     email = db.Column(db.String(255))
