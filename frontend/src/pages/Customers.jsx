@@ -11,10 +11,16 @@ import MainLayout from "../layouts/MainLayout";
 import EmailCampaignModal from "../components/EmailCampaignModal";
 import { FiMail, FiPlus, FiEye, FiEdit2, FiTrash2 } from "react-icons/fi";
 
+
 export default function Customers() {
     const [searchParams, setSearchParams] = useSearchParams();
     const activeFilter = searchParams.get("filter") || "";
     const activeQuery = searchParams.get("q") || "";
+
+    const [startDate, setStartDate] = useState("");
+const [endDate, setEndDate] = useState("");
+const [appliedStartDate, setAppliedStartDate] = useState("");
+const [appliedEndDate, setAppliedEndDate] = useState("");
 
     const [customers, setCustomers] = useState([]);
     const [search, setSearch] = useState(activeQuery);
@@ -50,28 +56,59 @@ export default function Customers() {
     }, []);
 
     // Load and filter customer data based on page, activeFilter, and activeQuery
-    const fetchAndFilterCustomers = useCallback(async () => {
-        setLoading(true);
-        try {
-            let records = [];
+   const fetchAndFilterCustomers = useCallback(async () => {
 
-            if (activeQuery.trim() !== "") {
-                const searchResults = await searchCustomers(activeQuery);
-                records = searchResults || [];
-            } else {
-                const data = await getCustomers(page);
-                records = data?.customers || [];
-                setTotalPages(data?.total_pages || 1);
-            }
+    setLoading(true);
 
-            const filteredRecords = records.filter(c => filterCustomerByState(c, activeFilter));
-            setCustomers(filteredRecords);
-        } catch (err) {
-            console.error("Error fetching customers:", err);
-        } finally {
-            setLoading(false);
+    try {
+
+        let records = [];
+
+        if (activeQuery.trim() !== "") {
+
+            const searchResults = await searchCustomers(activeQuery);
+            records = searchResults || [];
+
+            setTotalPages(1);
+
+        } else {
+
+            const data = await getCustomers(
+                page,
+                10,
+                appliedStartDate,
+                appliedEndDate
+            );
+
+            records = data?.customers || [];
+            setTotalPages(data?.total_pages || 1);
+
         }
-    }, [page, activeFilter, activeQuery, filterCustomerByState]);
+
+        const filteredRecords = records.filter(
+            c => filterCustomerByState(c, activeFilter)
+        );
+
+        setCustomers(filteredRecords);
+
+    } catch (err) {
+
+        console.error("Error fetching customers:", err);
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+}, [
+    page,
+    activeFilter,
+    activeQuery,
+    filterCustomerByState,
+    appliedStartDate,
+    appliedEndDate
+]);
 
     useEffect(() => {
         fetchAndFilterCustomers();
@@ -103,6 +140,27 @@ export default function Customers() {
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
         );
     };
+
+    function handleApplyDateFilter() {
+
+    if (startDate && endDate && startDate > endDate) {
+        alert("Start Date cannot be after End Date");
+        return;
+    }
+
+    setPage(1);
+    setAppliedStartDate(startDate);
+    setAppliedEndDate(endDate);
+}
+
+function handleClearDateFilter() {
+
+    setStartDate("");
+    setEndDate("");
+    setAppliedStartDate("");
+    setAppliedEndDate("");
+    setPage(1);
+}
 
     // Delete Customer
     async function handleDelete(id) {
@@ -195,6 +253,60 @@ export default function Customers() {
                     </Link>
                 </Col>
             </Row>
+
+{/* DATE FILTER SECTION */}
+<Card className="mb-4 border-0 shadow-sm">
+    <Card.Body>
+        <Row className="align-items-end g-3">
+
+            <Col md={4}>
+                <Form.Label className="fw-semibold">
+                    Start Date
+                </Form.Label>
+
+                <Form.Control
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                />
+            </Col>
+
+            <Col md={4}>
+                <Form.Label className="fw-semibold">
+                    End Date
+                </Form.Label>
+
+                <Form.Control
+                    type="date"
+                    value={endDate}
+                    min={startDate || undefined}
+                    onChange={(e) => setEndDate(e.target.value)}
+                />
+            </Col>
+
+            <Col md={4}>
+                <div className="d-flex gap-2">
+
+                    <Button
+                        variant="primary"
+                        onClick={handleApplyDateFilter}
+                    >
+                        Apply Filter
+                    </Button>
+
+                    <Button
+                        variant="outline-secondary"
+                        onClick={handleClearDateFilter}
+                    >
+                        Clear
+                    </Button>
+
+                </div>
+            </Col>
+
+        </Row>
+    </Card.Body>
+</Card>
 
             {/* Responsive Table Card Wrapper */}
             <Card className="border-0 shadow-sm rounded-3 overflow-hidden">

@@ -26,10 +26,9 @@ class TransformerService:
         summarization_ckpt = TRANSFORMER_DIR / "checkpoints" / "summarization_model.pt"
 
         checkpoint_path = summarization_ckpt
-        if prediction_ckpt.exists() and prediction_ckpt.stat().st_size > 0:
-            checkpoint_path = prediction_ckpt
-        elif summarization_ckpt.exists() and summarization_ckpt.stat().st_size > 0:
-            checkpoint_path = summarization_ckpt
+        if not summarization_ckpt.exists() or summarization_ckpt.stat().st_size == 0:
+             print(f"Summarization checkpoint missing or empty: {summarization_ckpt}")
+             return False
 
         if not checkpoint_path.exists() or checkpoint_path.stat().st_size == 0:
             print(f"Transformer Checkpoint file missing or empty at {checkpoint_path}")

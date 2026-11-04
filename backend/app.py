@@ -9,6 +9,7 @@ from datetime import timedelta
 from config import Config
 from database.connection import db
 from flasgger import Swagger
+from routes.summary_routes import summary_bp
 
 
 # ==========================================
@@ -102,6 +103,11 @@ app.register_blueprint(
 
 app.register_blueprint(
     email_bp,
+    url_prefix="/api"
+)
+
+app.register_blueprint(
+    summary_bp,
     url_prefix="/api"
 )
 
